@@ -15,7 +15,21 @@ const Signup: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phonenumber, setPhoneNumber] = useState<string>('');
+  const [phoneError, setPhoneError] = useState<string>('');
   const navigate = useNavigate();
+
+  // Handle phone number input
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    
+    if (value.length <= 10) {
+      setPhoneNumber(value);
+      // Clear error immediately if they reach 10 digits
+      if (value.length === 10) {
+        setPhoneError('');
+      }
+    }
+  };
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse: TokenResponse) => {
@@ -50,6 +64,13 @@ const Signup: React.FC = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check for 10 digits before submitting
+    if (phonenumber.length !== 10) {
+      setPhoneError('Please enter a valid 10-digit phone number');
+      return;
+    }
+
     try {
       const res = await fetch(`${apiUrl}/signup`, {
         method: "POST",
@@ -65,7 +86,7 @@ const Signup: React.FC = () => {
         navigate("/login");
       }
     } catch (err) {
-      alert("Something went wrong");
+      alert("Something went wrong with the connection");
     }
   };
 
@@ -73,29 +94,56 @@ const Signup: React.FC = () => {
     <div className="auth-card-wrapper">
       <div className="auth-card horizontal-layout">
         <div className="login-left">
-          <img src="tasting-curry.gif" className="side-gif" />
+          <img src="tasting-curry.gif" alt="Cooking animation" className="side-gif" />
         </div>
         <div className="auth-content-wrapper">
           <div className="auth-header">
             <h2>Create Account</h2>
             <p>Join FoodsFolio and start your culinary journey</p>
           </div>
+          
           <form className="auth-form" onSubmit={handleSignup}>
             <div className="input-group">
               <label>Full Name</label>
-              <input type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} required />
+              <input 
+                type="text" 
+                placeholder="John Doe" 
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+                required 
+              />
             </div>
+
             <div className="input-group">
               <label>Email Address</label>
-              <input type="email" placeholder="name@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input 
+                type="email" 
+                placeholder="name@company.com" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                required 
+              />
             </div>
+
             <div className="input-group">
               <label>Phone Number</label>
-              <input type="number" placeholder="xxxxxxxxxx" value={phonenumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+              <input 
+                type="tel" 
+                placeholder="9876XXXXXX" 
+                value={phonenumber} 
+                onChange={handlePhoneChange} 
+                className={phoneError ? 'input-error' : ''}
+                required 
+              />
+              {/* This renders the warning text directly under the input */}
+              {phoneError && <span className="error-text">{phoneError}</span>}
             </div>
+
             <button type="submit" className="auth-submit-btn">Sign Up</button>
           </form>
+
           <div className="divider"><span>OR</span></div>
+
           <div className="social-login-container">
             <button className="social-btn google" onClick={() => login()} title="Sign up with Google">
               <svg viewBox="0 0 24 24" width="20" height="20">
@@ -105,6 +153,7 @@ const Signup: React.FC = () => {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
             </button>
+            {/* Apple and Facebook buttons remain the same */}
             <button className="social-btn apple" onClick={() => alert("Apple Signup coming soon!")} title="Sign up with Apple">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.08-.46-2.07-.48-3.2 0-1.44.62-2.2.44-3.04-.35C3.25 15.82 3.65 8.94 8.54 8.7c1.23.06 2.11.75 2.86.75.7 0 1.9-.84 3.33-.7 1.12.06 4.14.47 5.06 4.34-2.52 1.34-2.12 5.16.51 6.33-.51 1.37-1.3 2.84-2.25 3.86zM14.65 3.62c.57-.73.96-1.74.83-2.73-.87.04-1.92.59-2.54 1.32-.56.64-.99 1.67-.83 2.62.97.08 2-.51 2.54-1.21z" />
@@ -116,6 +165,7 @@ const Signup: React.FC = () => {
               </svg>
             </button>
           </div>
+
           <div className="auth-footer">
             <p>Already have an account? <Link to="/login" className="switch-link">Login</Link></p>
           </div>

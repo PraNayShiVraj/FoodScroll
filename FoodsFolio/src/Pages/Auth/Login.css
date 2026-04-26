@@ -21,13 +21,14 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url("top-view-cropped-hands-senior-cook-unrecognizable-cutting-carrot-cooking-vegetable-stew_1098-20510.avif");
+    url("image.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   font-family: 'Outfit', sans-serif;
   box-sizing: border-box;
 }
+
 
 .auth-card {
   background: rgba(30, 30, 30, 0.8);

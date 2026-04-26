@@ -5,3 +5,16 @@
   max-width: 500px;
   /* Signup might need a bit more width for more fields */
 }
+
+.error-text {
+  color: #ff4b4b;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+}
+
+.input-error {
+  border-color: #ff4b4b !important;
+  box-shadow: 0 0 5px rgba(255, 75, 75, 0.2);
+}
