@@ -1,0 +1,7 @@
+@import url('./Login.css');
+
+/* Signup specific overrides can go here if needed */
+.auth-card {
+  max-width: 500px;
+  /* Signup might need a bit more width for more fields */
+}
