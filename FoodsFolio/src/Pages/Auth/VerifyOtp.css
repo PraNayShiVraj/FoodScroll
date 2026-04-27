@@ -1,0 +1,158 @@
+/* VerifyOtp.css */
+
+.verify-otp-page.auth-card-wrapper {
+    min-height: 100vh;
+    min-height: 100svh;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url("/image.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Outfit', sans-serif;
+}
+
+.verify-otp-page .auth-card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    color: white;
+    animation: slideUpVerify 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    margin: 20px;
+}
+
+@keyframes slideUpVerify {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.verify-otp-page .auth-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.verify-otp-page .auth-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+    background: linear-gradient(to right, #fff, #2ecc71);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.verify-otp-page .auth-header p {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.verify-otp-page .auth-form .input-group {
+    margin-bottom: 25px;
+}
+
+.verify-otp-page .auth-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.verify-otp-page .auth-form input {
+    width: 92%;
+    padding: 15px;
+    margin-right: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 1.5rem;
+    letter-spacing: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.verify-otp-page .auth-form input:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+}
+
+.verify-otp-page .auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+    letter-spacing: normal;
+    font-size: 1rem;
+}
+
+.verify-otp-page .auth-submit-btn {
+    width: 40%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.verify-otp-page .auth-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+}
+
+.verify-otp-page .auth-footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.verify-otp-page .switch-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 5px;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.verify-otp-page .switch-btn:hover {
+    color: var(--secondary-color);
+}
+
+@media (max-width: 480px) {
+    .verify-otp-page .auth-card {
+        margin: 0;
+        max-width: none;
+        height: 100vh;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

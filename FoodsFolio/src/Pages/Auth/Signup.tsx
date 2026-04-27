@@ -21,7 +21,7 @@ const Signup: React.FC = () => {
   // Handle phone number input
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-    
+
     if (value.length <= 10) {
       setPhoneNumber(value);
       // Clear error immediately if they reach 10 digits
@@ -62,36 +62,38 @@ const Signup: React.FC = () => {
     onError: () => alert("Google Signup Failed"),
   });
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Check for 10 digits before submitting
+
     if (phonenumber.length !== 10) {
       setPhoneError('Please enter a valid 10-digit phone number');
       return;
     }
 
     try {
-      const res = await fetch(`${apiUrl}/signup`, {
+      const res = await fetch(`${apiUrl}/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phonenumber }),
       });
+
       const data = await res.json();
+
       if (!res.ok) {
-        alert(data.detail || "Signup failed");
+        alert(data.detail || "Failed to send OTP");
       } else {
-        alert("Account created successfully! 🎉");
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/login");
+        // store temp data for next step
+        localStorage.setItem("signupData", JSON.stringify({ name, email, phonenumber }));
+
+        navigate("/verify-otp");
       }
     } catch (err) {
-      alert("Something went wrong with the connection");
+      alert("Connection error");
     }
   };
 
   return (
-    <div className="auth-card-wrapper">
+    <div className="signup-page auth-card-wrapper">
       <div className="auth-card horizontal-layout">
         <div className="login-left">
           <img src="tasting-curry.gif" alt="Cooking animation" className="side-gif" />
@@ -101,45 +103,45 @@ const Signup: React.FC = () => {
             <h2>Create Account</h2>
             <p>Join FoodsFolio and start your culinary journey</p>
           </div>
-          
-          <form className="auth-form" onSubmit={handleSignup}>
+
+          <form className="auth-form" onSubmit={handleNext}>
             <div className="input-group">
               <label>Full Name</label>
-              <input 
-                type="text" 
-                placeholder="John Doe" 
-                value={name} 
-                onChange={(e) => setName(e.target.value)} 
-                required 
+              <input
+                type="text"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
 
             <div className="input-group">
               <label>Email Address</label>
-              <input 
-                type="email" 
-                placeholder="name@company.com" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                required 
+              <input
+                type="email"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
             <div className="input-group">
               <label>Phone Number</label>
-              <input 
-                type="tel" 
-                placeholder="9876XXXXXX" 
-                value={phonenumber} 
-                onChange={handlePhoneChange} 
+              <input
+                type="tel"
+                placeholder="9876XXXXXX"
+                value={phonenumber}
+                onChange={handlePhoneChange}
                 className={phoneError ? 'input-error' : ''}
-                required 
+                required
               />
               {/* This renders the warning text directly under the input */}
               {phoneError && <span className="error-text">{phoneError}</span>}
             </div>
 
-            <button type="submit" className="auth-submit-btn">Sign Up</button>
+            <button type="submit" className="auth-submit-btn">Verify</button>
           </form>
 
           <div className="divider"><span>OR</span></div>

@@ -69,10 +69,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="auth-card-wrapper">
+    <div className="login-page auth-card-wrapper">
       <div className="auth-card horizontal-layout">
         <div className="login-left">
-          <img src="/935ef3e9c164fe37ddde01ccd8cec4ba.gif" className="side-gif" />
+          <img src="/output-onlinegiftools.gif" className="side-gif" />
         </div>
         <div className="auth-content-wrapper">
           <div className="auth-header">
