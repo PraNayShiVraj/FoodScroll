@@ -33,7 +33,8 @@ const ProfilePic: React.FC = () => {
 
       const token = localStorage.getItem('token');
       
-      const res = await fetch('http://localhost:3000/upload-profile-pic', {
+      const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000";
+      const res = await fetch(`${apiUrl}/upload-profile-pic`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -11,6 +11,8 @@ interface FoodPost {
   comments: number;
 }
 
+const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000";
+
 const FoodProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'posts' | 'reels'>('posts');
 
@@ -34,7 +36,7 @@ const FoodProfile: React.FC = () => {
       setIsProfileLoading(true);
       setProfileNotFound(false);
       try {
-        const response = await fetch(`http://localhost:3000/api/profile/${username}`);
+        const response = await fetch(`${apiUrl}/api/profile/${username}`);
         if (!response.ok) {
           setProfileNotFound(true);
         } else {
@@ -116,7 +118,7 @@ const FoodProfile: React.FC = () => {
     setSettingsError('');
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/send-otp-auth', {
+      const response = await fetch(`${apiUrl}/send-otp-auth`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -140,7 +142,7 @@ const FoodProfile: React.FC = () => {
     setSettingsError('');
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/update-credentials', {
+      const response = await fetch(`${apiUrl}/update-credentials`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +188,7 @@ const FoodProfile: React.FC = () => {
       }
 
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/update-profile', {
+      const response = await fetch(`${apiUrl}/update-profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`
