@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Bookmark, RefreshCcw, UserSquare, Settings, Plus, Heart, MessageCircle, Eye, EyeOff } from 'lucide-react';
+import { Grid, RefreshCcw, Settings, Heart, MessageCircle, Eye, EyeOff } from 'lucide-react';
 import './profile.css';
 import { useParams } from 'react-router-dom';
 
