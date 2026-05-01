@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import type { TokenResponse } from '@react-oauth/google';
 
-const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:8000";
+const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000"; //node backend
 
 interface SignupData {
   user: any;
@@ -13,6 +13,7 @@ interface SignupData {
 
 const Signup: React.FC = () => {
   const [name, setName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phonenumber, setPhoneNumber] = useState<string>('');
   const [phoneError, setPhoneError] = useState<string>('');
@@ -74,7 +75,7 @@ const Signup: React.FC = () => {
       const res = await fetch(`${apiUrl}/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phonenumber }),
+        body: JSON.stringify({ name, username, email, phonenumber }),
       });
 
       const data = await res.json();
@@ -83,7 +84,7 @@ const Signup: React.FC = () => {
         alert(data.detail || "Failed to send OTP");
       } else {
         // store temp data for next step
-        localStorage.setItem("signupData", JSON.stringify({ name, email, phonenumber }));
+        localStorage.setItem("signupData", JSON.stringify({ name, username, email, phonenumber }));
 
         navigate("/verify-otp");
       }
@@ -112,6 +113,17 @@ const Signup: React.FC = () => {
                 placeholder="John Doe"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Username</label>
+              <input
+                type="text"
+                placeholder="johndoe_123"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import './Password.css';
 
-const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:8000";
+const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000"; //node backend
 
 const Password: React.FC = () => {
     const [password, setPassword] = useState('');
@@ -53,8 +53,9 @@ const Password: React.FC = () => {
                 setError(data.detail || "Failed to set password");
             } else {
                 localStorage.removeItem("signupData");
+                localStorage.setItem("token", data.token); // Store JWT Token!
                 localStorage.setItem("user", JSON.stringify(data.user));
-                navigate("/dashboard");
+                navigate("/profilepic");
             }
         } catch (err) {
             setError("Connection error to server");

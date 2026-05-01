@@ -234,6 +234,31 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
+.login-page .auth-form .password-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.login-page .password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.login-page .password-toggle-btn:hover {
+  color: var(--primary-color);
+}
+
 .login-page .auth-submit-btn {
   width: 40%;
   padding: 14px;

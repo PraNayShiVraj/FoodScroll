@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import type { TokenResponse } from '@react-oauth/google';
 
-const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:8000";
+const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000"; //node backend
 
 interface UserData {
   user: any;
   detail?: string;
+  token?: string;
 }
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
@@ -34,8 +37,9 @@ const Login: React.FC = () => {
         }
         if (res.ok) {
           alert("Google Login successful! 🚀");
+          if (data.token) localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
-          navigate("/dashboard");
+          navigate(`/profile/${data.user.username}`);
         } else {
           alert(data.detail || "Google authentication failed");
         }
@@ -60,8 +64,9 @@ const Login: React.FC = () => {
         alert(data.detail || "Login failed");
       } else {
         alert("Login successful 🎉");
+        if (data.token) localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/dashboard");
+        navigate(`/profile/${data.user.username}`);
       }
     } catch (err) {
       alert("Something went wrong");
@@ -86,7 +91,12 @@ const Login: React.FC = () => {
             </div>
             <div className="input-group">
               <label>Password</label>
-              <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <div className="password-input-wrapper">
+                <input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="password-toggle-btn">
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
             <button type="submit" className="auth-submit-btn">Sign In</button>
           </form>
