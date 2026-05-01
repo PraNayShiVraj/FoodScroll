@@ -12,7 +12,13 @@ const { upload, cloudinary } = require('./config/cloudinary');
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://foodscroll-2.onrender.com' // Replace with your frontend URL
+  ],
+  credentials: true
+}));
 app.use(express.json()); // Essential for parsing JSON in 2026
 
 // Connect to MongoDB
