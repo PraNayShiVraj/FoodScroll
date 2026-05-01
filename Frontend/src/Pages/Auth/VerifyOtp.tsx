@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VerifyOtp.css";
-
-const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000"; //node backend
+import { API_URL as apiUrl } from '../../config/api';
 
 const VerifyOtp: React.FC = () => {
     const [otp, setOtp] = useState("");

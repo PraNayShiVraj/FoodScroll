@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Grid, RefreshCcw, Settings, Heart, MessageCircle, Eye, EyeOff } from 'lucide-react';
 import './profile.css';
 import { useParams } from 'react-router-dom';
+import { API_URL as apiUrl } from '../../config/api';
 
 interface FoodPost {
   id: number;
@@ -10,8 +11,6 @@ interface FoodPost {
   likes: number;
   comments: number;
 }
-
-const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000";
 
 const FoodProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'posts' | 'reels'>('posts');

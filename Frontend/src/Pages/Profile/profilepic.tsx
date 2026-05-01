@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, UploadCloud, Loader2 } from 'lucide-react';
 import './profilepic.css';
+import { API_URL as apiUrl } from '../../config/api';
 
 const ProfilePic: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -33,7 +34,7 @@ const ProfilePic: React.FC = () => {
 
       const token = localStorage.getItem('token');
       
-      const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000";
+
       const res = await fetch(`${apiUrl}/upload-profile-pic`, {
         method: 'POST',
         headers: {

@@ -3,8 +3,7 @@ import './Signup.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import type { TokenResponse } from '@react-oauth/google';
-
-const apiUrl = (import.meta.env.VITE_API_URL as string) || "http://localhost:3000"; //node backend
+import { API_URL as apiUrl } from '../../config/api';
 
 interface SignupData {
   user: any;
