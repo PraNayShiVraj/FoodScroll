@@ -3,7 +3,6 @@ import { Eye, EyeOff } from 'lucide-react';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-import type { TokenResponse } from '@react-oauth/google';
 import { API_URL as apiUrl } from '../../config/api';
 
 interface UserData {
@@ -19,12 +18,13 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
-    onSuccess: async (tokenResponse: TokenResponse) => {
+    flow: 'auth-code',
+    onSuccess: async (codeResponse) => {
       try {
         const res = await fetch(`${apiUrl}/auth/google`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: tokenResponse.access_token }),
+          body: JSON.stringify({ code: codeResponse.code }),
         });
         const text = await res.text();
         let data: UserData = { user: null };
@@ -35,10 +35,9 @@ const Login: React.FC = () => {
           throw new Error("Invalid response from server");
         }
         if (res.ok) {
-          alert("Google Login successful! 🚀");
           if (data.token) localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
-          navigate(`/profile/${data.user.username}`);
+          navigate(`/profile/${data.user._id}`);
         } else {
           alert(data.detail || "Google authentication failed");
         }
@@ -62,10 +61,9 @@ const Login: React.FC = () => {
       if (!res.ok) {
         alert(data.detail || "Login failed");
       } else {
-        alert("Login successful 🎉");
         if (data.token) localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        navigate(`/profile/${data.user.username}`);
+        navigate(`/profile/${data.user._id}`);
       }
     } catch (err) {
       alert("Something went wrong");

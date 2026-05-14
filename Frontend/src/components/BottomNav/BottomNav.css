@@ -1,0 +1,138 @@
+/* ─── Bottom Navigation Bar ──────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 68px;
+  padding: 0 24px;
+  padding-bottom: env(safe-area-inset-bottom); /* iPhone notch support */
+
+  background: rgba(13, 13, 13, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  /* Subtle top glow */
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.04),
+              0 -8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Nav Item (button) ──────────────────────────────────── */
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  padding: 8px 0;
+  border-radius: 12px;
+  transition: color 0.2s ease;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item:active {
+  transform: scale(0.93);
+  transition: transform 0.1s ease, color 0.2s ease;
+}
+
+/* Active state */
+.nav-item--active {
+  color: #ff5e00;
+}
+
+/* ─── Icon wrapper (houses icon + dot) ──────────────────── */
+.nav-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Active indicator dot below icon */
+.nav-dot {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff8a00, #ff5e00);
+  animation: dot-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes dot-pop {
+  from { transform: translateX(-50%) scale(0); opacity: 0; }
+  to   { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+/* ─── Label ──────────────────────────────────────────────── */
+.nav-label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  line-height: 1;
+  margin-top: 6px;
+}
+
+/* ─── Middle Square Plus Button ──────────────────────────── */
+.nav-middle-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* Lift it slightly if desired, or keep it aligned */
+  margin-top: -10px; 
+}
+
+.nav-search-square {
+  width: 44px;
+  height: 44px;
+  background-color: white;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff5e00; /* Orange plus */
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.2s ease;
+}
+
+.nav-search-square:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 94, 0, 0.25),
+              0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.nav-search-square:active {
+  transform: scale(0.95);
+}
+
+/* Hover (desktop) */
+@media (hover: hover) {
+  .nav-item:not(.nav-item--active):hover {
+    color: #888;
+  }
+}

@@ -23,7 +23,7 @@ const ProfilePic: React.FC = () => {
   const handleNext = async () => {
     if (!fileToUpload) {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      navigate(`/profile/${user.username || ''}`);
+      navigate(`/profile/${user._id || ''}`);
       return;
     }
 
@@ -58,7 +58,7 @@ const ProfilePic: React.FC = () => {
       }
 
       const updatedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      navigate(`/profile/${updatedUser.username || ''}`);
+      navigate(`/profile/${updatedUser._id || ''}`);
     } catch (err) {
       console.error(err);
       alert((err as Error).message);

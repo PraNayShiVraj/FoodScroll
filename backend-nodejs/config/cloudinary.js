@@ -11,10 +11,42 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'foodfolio_profiles',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
-    transformation: [{ width: 500, height: 500, crop: 'limit' }],
+  params: async (req, file) => {
+    let folder = 'foodfolio_general';
+    let resource_type = 'auto'; // Automatically detect image or video
+    let transformation = [];
+
+    console.log('--- Cloudinary Storage Params Debug ---');
+    console.log('Incoming File:', file.originalname, file.mimetype);
+
+    if (req.path.includes('profile')) {
+      folder = 'foodfolio_profiles';
+      transformation = [{ width: 500, height: 500, crop: 'fill', gravity: 'face' }];
+    } else if (req.path.includes('post')) {
+      folder = 'foodfolio_posts';
+      transformation = [{ aspect_ratio: "4:5", crop: "fill", gravity: "center" }];
+    } else if (req.path.includes('shorts')) {
+      folder = 'foodfolio_shorts';
+      resource_type = 'video';
+      transformation = [{ aspect_ratio: "9:16", crop: "fill", gravity: "center" }];
+    }
+
+    const params = {
+      folder: folder,
+      resource_type: resource_type,
+      allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'mp4', 'mov', 'avi']
+    };
+
+    // For videos, use eager transformation and eager_async to prevent synchronous processing timeout errors
+    if (req.path.includes('shorts')) {
+      params.eager = transformation;
+      params.eager_async = true;
+    } else {
+      params.transformation = transformation;
+    }
+
+    console.log('Generated Params:', params);
+    return params;
   },
 });
 

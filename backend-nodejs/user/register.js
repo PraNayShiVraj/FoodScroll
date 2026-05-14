@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
       { expiresIn: '5h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, message: "User registered successfully", user: { name: user.name, username: user.username, email: user.email, profilePic: user.profilePic, bio: user.bio, lastUsernameChange: user.lastUsernameChange, phonenumber: user.phonenumber, createdAt: user.createdAt } });
+        res.json({ token, message: "User registered successfully", user: { _id: user._id, name: user.name, username: user.username, email: user.email, profilePic: user.profilePic, bio: user.bio, lastUsernameChange: user.lastUsernameChange, phonenumber: user.phonenumber, createdAt: user.createdAt } });
       }
     );
   } catch (err) {

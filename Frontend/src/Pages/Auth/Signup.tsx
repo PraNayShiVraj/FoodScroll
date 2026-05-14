@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import './Signup.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-import type { TokenResponse } from '@react-oauth/google';
 import { API_URL as apiUrl } from '../../config/api';
 
 interface SignupData {
   user: any;
   detail?: string;
+  token?: string;
 }
 
 const Signup: React.FC = () => {
@@ -32,12 +32,13 @@ const Signup: React.FC = () => {
   };
 
   const login = useGoogleLogin({
-    onSuccess: async (tokenResponse: TokenResponse) => {
+    flow: 'auth-code',
+    onSuccess: async (codeResponse) => {
       try {
         const res = await fetch(`${apiUrl}/auth/google`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: tokenResponse.access_token }),
+          body: JSON.stringify({ code: codeResponse.code }),
         });
         const text = await res.text();
         let data: SignupData = { user: null };
@@ -49,8 +50,9 @@ const Signup: React.FC = () => {
         }
         if (res.ok) {
           alert("Google Signup successful! 🚀");
+          if (data.token) localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
-          navigate("/dashboard");
+          navigate(`/profile/${data.user._id}`);
         } else {
           alert(data.detail || "Google authentication failed");
         }

@@ -17,11 +17,21 @@ const userSchema = new mongoose.Schema({
   },
   phonenumber: {
     type: String,
-    required: true,
+    required: false,
+    default: '',
   },
   password: {
     type: String,
-    required: true,
+    required: false,
+  },
+  authProvider: {
+    type: String,
+    enum: ['local', 'google'],
+    default: 'local',
+  },
+  googleId: {
+    type: String,
+    default: null,
   },
   createdAt: {
     type: Date,
@@ -38,7 +48,12 @@ const userSchema = new mongoose.Schema({
   lastUsernameChange: {
     type: Date,
     default: null,
-  }
+  },
+  savedContent: [{
+    contentId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    contentType: { type: String, enum: ['post', 'short'], required: true },
+    savedAt: { type: Date, default: Date.now }
+  }]
 });
 
 module.exports = mongoose.model('User', userSchema);

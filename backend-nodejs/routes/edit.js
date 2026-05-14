@@ -1,19 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const authorizeOwner = require('../middleware/authorizeOwner');
 const { upload, cloudinary } = require('../config/cloudinary');
 const User = require('../models/User');
 
 // Update Profile Endpoint
-router.put('/update-profile', auth, upload.single('profilePic'), async (req, res) => {
+// Auth flow: auth (JWT validation) → authorizeOwner (ownership check) → handler
+router.put('/update-profile', auth, authorizeOwner(), upload.single('profilePic'), async (req, res) => {
   try {
     const { username, bio } = req.body;
     const userId = req.user.id;
     
-    // Find the user first
+    // Find the user — guaranteed to exist by authorizeOwner middleware,
+    // but we need the Mongoose document (not lean) for .save()
     let user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ detail: "User not found" });
+    }
+
+    // Defense-in-depth: ensure token user matches the document being modified
+    if (user._id.toString() !== userId) {
+      return res.status(403).json({ detail: "Forbidden: You can only update your own profile" });
     }
 
     // 1. Handle Username Update
@@ -72,6 +80,7 @@ router.put('/update-profile', auth, upload.single('profilePic'), async (req, res
     res.json({ 
       message: "Profile updated successfully", 
       user: { 
+        _id: user._id,
         name: user.name, 
         username: user.username, 
         email: user.email, 

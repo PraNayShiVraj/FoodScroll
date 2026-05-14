@@ -6,6 +6,10 @@ import VerifyOtp from "./Pages/Auth/VerifyOtp";
 import Password from "./Pages/Auth/Password";
 import FoodProfile from "./Pages/Profile/Profile";
 import ProfilePic from "./Pages/Profile/profilepic";
+import Search from "./Pages/Search/search";
+import Upload from "./Pages/upload/upload";
+import SavedItems from "./Pages/Profile/SavedItems";
+import BottomNav from "./components/BottomNav/BottomNav";
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -17,7 +21,7 @@ const ProfileRedirect = () => {
     try {
         const user = JSON.parse(userStr);
         if (user && user.username) {
-            return <Navigate to={`/profile/${user.username}`} replace />;
+            return <Navigate to={`/profile/${user._id}`} replace />;
         }
     } catch (e) {
         return <Navigate to="/Login" />;
@@ -37,9 +41,13 @@ function App() {
                         <Route path="/verify-otp" element={<VerifyOtp />} />
                         <Route path="/password" element={<Password />} />
                         <Route path="/profilepic" element={<ProfilePic />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/upload" element={<Upload />} />
                         <Route path="/profile" element={<ProfileRedirect />} />
-                        <Route path="/profile/:username" element={<FoodProfile />} />
+                        <Route path="/profile/:id" element={<FoodProfile />} />
+                        <Route path="/saved" element={<SavedItems />} />
                     </Routes>
+                    <BottomNav />
                 </div>
             </Router>
         </GoogleOAuthProvider>
